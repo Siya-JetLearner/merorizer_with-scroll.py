@@ -4,6 +4,31 @@ from tkinter.filedialog import *
 master = Tk()
 master.title("Memorizer")
 
+def openFile():
+    fin = askopenfile(title='Open File')
+    if fin is not None:
+        listbox.delete(0, END)
+        items= fin.readlines()
+        for item in items:
+            listbox.insert(END, item.strip())
+
+def saveFile():
+    fout = asksaveasfile (defaultextension=".txt")
+    if fout is not None:
+        for item in listbox.get(0, END):
+            print(item.strip(), file=fout)
+
+    listbox.delete(0, END)
+
+def addItem():
+    listbox.insert(END, item.get())
+    item.delete(0, END)
+
+def deleteItem():
+    index = listbox.curselection()
+    if index:
+        listbox.delete(index)
+
 
 fopen = Button (master, text="OPEN", command=openFile, width=15) 
 fDelete = Button (master, text="DELETE", command=deleteItem, width=15) 
@@ -31,3 +56,7 @@ for i in range(1,100):
 
 listbox.pack(side=LEFT, padx=5)
 scrollbar.config(command=listbox.yview)
+
+frame.pack(side=RIGHT)
+
+master.mainloop()
